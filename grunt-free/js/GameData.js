@@ -11,7 +11,7 @@ var GameData = {
     },
     "startingTiles": {
         "cave": {
-            "point": { "x": 608, "y": 1152}
+            "point": { "x": 608, "y": 1000}
         }
     }
 }

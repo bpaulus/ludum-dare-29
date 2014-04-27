@@ -22,3 +22,13 @@ Graveyard Mosoleum
 Top down Adventure
 "Beneath the Surface" More investigative style
 Wander around finding clues to the mystery - think detectives, sherlock holmes...
+
+
+
+Menu / Splash Screen
+Sound
+Enemies
+Collectables
+Refine Levels
+Boss Fight
+Story Line?
