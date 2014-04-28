@@ -8,6 +8,7 @@ function Well(game) {
         tiles,
         map,
         player,
+        scoreText,
         jumpTimer,
         wellbugs,
         special,
@@ -28,8 +29,13 @@ function Well(game) {
 Well.prototype = {
     preload: function () {
 
+
         this.game.load.spritesheet('player', 'assets/player.png', 32, 32);
-        this.game.load.tilemap('map', 'assets/well.json', null, Phaser.Tilemap.TILED_JSON);
+        if (GameData.well.id === 1) {
+            this.game.load.tilemap('map', 'assets/well.json', null, Phaser.Tilemap.TILED_JSON);
+        } else {
+            this.game.load.tilemap('map', 'assets/well2.json', null, Phaser.Tilemap.TILED_JSON);
+        }
         this.game.load.image('tiles', 'assets/tiles.png');
         this.game.load.spritesheet('bug', 'assets/enemies.png', 32, 32);
 
@@ -54,6 +60,8 @@ Well.prototype = {
 
         // collide with the door...
         this.map.setTileIndexCallback(63, this.toWorld, this);
+
+        // collide with something?
         this.map.setTileIndexCallback(61, this.getItem, this);
 
         this.player = this.game.add.sprite(0, 0, 'player');
@@ -107,10 +115,9 @@ Well.prototype = {
 
         this.cursors = this.game.input.keyboard.createCursorKeys();
         this.fireButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        this.game.input.keyboard.addKeyCapture([ Phaser.Keyboard.LEFT, Phaser.Keyboard.RIGHT,Phaser.Keyboard.UP, Phaser.Keyboard.DOWN, Phaser.Keyboard.SPACEBAR ]);
 
-
-        this.scoreText = this.game.add.text(this.game.world.centerX, 10, 'SCORE: ' + GameData.player.data.score, {font: '20px Arial', fill: "#ffffff", align: "left"});
-        this.scoreText.anchor.setTo(0.5, 0.5);
+        this.scoreText = this.game.add.text(10, 10, 'SCORE: ' + GameData.player.data.score, {font: '20px Arial', fill: "#ffffff", align: "left"});
         this.scoreText.fixedToCamera = true;
 
         // sound

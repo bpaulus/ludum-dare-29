@@ -1,7 +1,7 @@
 /**
  * Created by paulusb on 4/26/14.
  */
-function Cave(game) {
+function Cave2(game) {
     var game,
         bugs,
         startingTiles,
@@ -17,9 +17,9 @@ function Cave(game) {
 
 };
 
-Cave.prototype = {
+Cave2.prototype = {
     preload: function () {
-        this.game.load.tilemap('map', 'assets/cave.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.tilemap('map', 'assets/cave2.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.spritesheet('player', 'assets/player.png', 32, 32);
         this.game.load.image('tiles', 'assets/tiles.png');
         this.game.load.spritesheet('bug', 'assets/enemies.png', 32, 32);
@@ -31,7 +31,7 @@ Cave.prototype = {
 
         this.game.load.audio('sfx', 'assets/Hit_Hurt.mp3');
 
-        this.startingTiles = GameData.startingTiles.cave.point;
+        this.startingTiles = GameData.startingTiles.cave2.point;
     },
     create: function () {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -46,10 +46,8 @@ Cave.prototype = {
         this.map.setCollisionBetween(21, 30);
         this.map.setCollisionBetween(41, 50);
 
-        this.map.setTileIndexCallback(63, this.cave2, this);
-
         this.map.setTileIndexCallback(11, this.toWorld, this);
-        this.map.setTileIndexCallback(11, this.toWorld, this);
+        this.map.setTileIndexCallback(63, this.boss, this);
 
         this.player = this.game.add.sprite(this.startingTiles.x, this.startingTiles.y, 'player');
         this.player.anchor.setTo(0.5, 0.5);
@@ -161,8 +159,8 @@ Cave.prototype = {
     toWorld: function () {
         this.game.state.start('world');
     },
-    cave2: function () {
-        this.game.state.start('cave2');
+    boss: function () {
+        this.game.state.start('boss');
     },
     bugCollectHandler: function (player, bug) {
         bug.kill();

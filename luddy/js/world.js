@@ -30,7 +30,7 @@ function World(game) {
 World.prototype = {
 
     preload: function () {
-        this.game.load.tilemap('map', 'assets/tiles.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.tilemap('map', 'assets/world.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.spritesheet('player', 'assets/player.png', 32, 32);
         this.game.load.image('tiles', 'assets/tiles.png');
         this.game.load.spritesheet('bug', 'assets/enemies.png', 32, 32);
@@ -96,16 +96,17 @@ World.prototype = {
         this.game.physics.arcade.enable(this.player);
         this.game.camera.follow(this.player);
 
-        this.scoreText = this.game.add.text(this.game.world.centerX, 10, 'SCORE: ' + GameData.player.data.score, {font: '20px Arial', fill: "#ffffff", align: "left"});
-        this.scoreText.anchor.setTo(0.5, 0.5);
+        this.scoreText = this.game.add.text(10, 10, 'SCORE: ' + GameData.player.data.score, {font: '20px Arial', fill: "#ffffff", align: "left"});
         this.scoreText.fixedToCamera = true;
+
 
         this.cursors = this.game.input.keyboard.createCursorKeys();
         this.fireButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        this.game.input.keyboard.addKeyCapture([ Phaser.Keyboard.LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.UP, Phaser.Keyboard.DOWN, Phaser.Keyboard.SPACEBAR ]);
 
         // sound
         this.sfx = this.game.add.audio('sfx');
-        this.sfx.addMarker('shoot', 0,1);
+        this.sfx.addMarker('shoot', 0, 1);
 
     },
     update: function () {
@@ -168,7 +169,9 @@ World.prototype = {
 //        this.player.debug;
     },
     gate: function () {
+        GameData.well.id = this.game.rnd.integerInRange(1, 2);
         this.game.state.start('well');
+
     },
     cave: function () {
         this.game.state.start('cave');
@@ -178,18 +181,18 @@ World.prototype = {
         GameData.player.data.score += 1;
         this.scoreText.setText('SCORE: ' + GameData.player.data.score);
     },
-    bulletEnvironmentHandler: function(bullet) {
+    bulletEnvironmentHandler: function (bullet) {
         bullet.kill();
     },
     bulletHandler: function (bullet, bug) {
         bullet.kill();
-            bug.kill();
-            GameData.player.data.score += 1;
-            this.scoreText.setText('SCORE: ' + GameData.player.data.score);
+        bug.kill();
+        GameData.player.data.score += 1;
+        this.scoreText.setText('SCORE: ' + GameData.player.data.score);
 
-            var explosion = this.explosions.getFirstExists(false);
-            explosion.reset(bug.body.x, bug.body.y);
-            explosion.play('explosions', 30, false, true);
+        var explosion = this.explosions.getFirstExists(false);
+        explosion.reset(bug.body.x, bug.body.y);
+        explosion.play('explosions', 30, false, true);
 
     },
     fireBullet: function (dir) {
@@ -200,7 +203,7 @@ World.prototype = {
             if (this.bullet) {
                 //  And fire it
                 this.bullet.reset(this.player.x, this.player.y);
-                switch(dir) {
+                switch (dir) {
                     case "up":
                         this.bullet.body.velocity.y = -400;
                         break;
